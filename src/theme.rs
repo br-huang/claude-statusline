@@ -5,7 +5,7 @@ use std::path::Path;
 pub struct Theme {
     pub theme_name: String,
     pub enabled_segments: Vec<String>,
-    pub separtor: String,
+    pub separator: String,
     pub colors: ColorScheme,
 }
 
@@ -46,7 +46,7 @@ impl Default for Theme {
                 "duration".to_string(),
                 "git".to_string(),
             ],
-            separtor: " │ ".to_string(),  // Unicode box-drawing character
+            separator: " │ ".to_string(),  // Unicode box-drawing character
             colors: ColorScheme::default(),
 
         }
@@ -98,7 +98,7 @@ impl Default for GitColors {
 }
 
 impl Theme {
-    pub fn from_file<P: AsRef<PAth>>(path: P) -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Self, Box<dyn std::error::Error>> {
         let content = std::fs::read_to_string(path)?;
         let theme: Self = toml::from_str(&content)?;
         Ok(theme)

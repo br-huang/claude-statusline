@@ -1,7 +1,7 @@
 // Analyze input from user
 
 use serde::{Deserialize, Serialize};
-use std::io::{self, Read};
+use std::{io::{self, Read}};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusInput {
@@ -43,10 +43,25 @@ pub struct CostInfo {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContextWindow {
     #[serde(default)]
-    pub input_window: u64,
+    pub total_input_window: u64,
 
     #[serde(default)]
-    pub output_window: u64,
+    pub total_output_window: u64,
+
+    #[serde(default)]
+    pub context_widnow_size: u64,
+
+    #[serde(default)]
+    pub current_usage: Option<CurrentUsage>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CurrentUsage {
+    #[serde(default)]
+    pub input_token: u64,
+
+    #[serde(default)]
+    pub output_token: u64,
 
     #[serde(default)]
     pub cache_creation_input_tokens: u64,
@@ -58,8 +73,8 @@ pub struct ContextWindow {
 // Workspace Info
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WorkspaceInfo {
-    pub current_directory: String,
-    pub project_directory: Option<String>,
+    pub current_dir: String,
+    pub project_dir: Option<String>,
 }
 
 impl StatusInput {
@@ -72,7 +87,7 @@ impl StatusInput {
 
     pub fn from_string(string: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let input: Self = serde_json::from_str(string)?;
-        OK(input)
+        Ok(input)
     }
     
 }
