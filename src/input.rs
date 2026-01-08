@@ -43,13 +43,13 @@ pub struct CostInfo {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContextWindow {
     #[serde(default)]
-    pub total_input_window: u64,
+    pub total_input_tokens: u64,
 
     #[serde(default)]
-    pub total_output_window: u64,
+    pub total_output_tokens: u64,
 
     #[serde(default)]
-    pub context_widnow_size: u64,
+    pub context_window_size: u64,
 
     #[serde(default)]
     pub current_usage: Option<CurrentUsage>,
