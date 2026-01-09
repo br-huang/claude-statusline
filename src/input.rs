@@ -58,10 +58,10 @@ pub struct ContextWindow {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CurrentUsage {
     #[serde(default)]
-    pub input_token: u64,
+    pub input_tokens: u64,
 
     #[serde(default)]
-    pub output_token: u64,
+    pub output_tokens: u64,
 
     #[serde(default)]
     pub cache_creation_input_tokens: u64,
