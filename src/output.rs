@@ -25,7 +25,7 @@ impl OutputRenderer {
             if segment.is_enabled(ctx) {
                 match segment.render(ctx) {
                     Ok(output) if output.visible => {
-                        // Sucess and render
+                        // Success and render
                         parts.push(output.text);
                     }
                     Ok(_) => {

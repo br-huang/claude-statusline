@@ -1,5 +1,5 @@
 #!/bin/bash
-# install.sh - Install Claude Statusline to Cluade Code
+# install.sh - Install Claude Statusline to Claude Code
 
 set -e
 
@@ -13,14 +13,13 @@ echo "📦 Installing binary..."
 cp target/release/claude-statusline ~/.claude/bin
 chmod +x ~/.claude/bin/claude-statusline
 
-echo "⚙️ Confiuring Claude Code..."
+echo "⚙️ Configuring Claude Code..."
 SETTINGS_FILE="$HOME/.claude/settings.json"
 
 if [ -f "$SETTINGS_FILE" ]; then
     # Check if Claude Code is already configured
     if command -v jq &> /dev/null; then
-        jq '.statusLine = {"type": "command", "command": "~/.claude/bin/claude-statusline"}' 
-        "$SETTINGS_FILE" > tmp.json && mv tmp.json "$SETTINGS_FILE"
+        jq '.statusLine = {"type": "command", "command": "~/.claude/bin/claude-statusline"}' "$SETTINGS_FILE" > tmp.json && mv tmp.json "$SETTINGS_FILE"
     else
         echo "⚠️ Please manually add statusline config to $SETTINGS_FILE"
     fi
