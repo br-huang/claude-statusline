@@ -27,7 +27,7 @@ impl GitSegment {
 
     fn get_git_status(&self, workspace_dir: &str) -> Result<GitStatus, Box<dyn Error>> {
         {
-            let cache = self.cache.lock().unwrap();
+            let cache = self.cache.lock().unwrap_or_else(|e| e.into_inner());
             if let Some((timestamp, ref status)) = *cache {
                 if timestamp.elapsed() < self.cache_ttl {
                     return Ok(status.clone());
@@ -45,6 +45,11 @@ impl GitSegment {
     }
 
     fn fetch_git_status(&self, workspace_dir: &str) -> Result<GitStatus, Box<dyn Error>> {
+        let path = std::path::Path::new(workspace_dir);
+        if !path.exists() || !path.is_dir() {
+            return Err("Invalid workspace directory".into());
+        }
+        
         let branch_output = Command::new("git")
             .args(["branch", "--show-current"])
             .current_dir(workspace_dir)
