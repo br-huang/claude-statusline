@@ -28,7 +28,7 @@ impl GitSegment {
     fn get_git_status(&self, workspace_dir: &str) -> Result<GitStatus, Box<dyn Error>> {
         {
             let cache = self.cache.lock().unwrap_or_else(|e| e.into_inner());
-            if let Some((timestamp, ref status)) = *cache {
+            if let Some((timestamp, status)) = cache.as_ref() {
                 if timestamp.elapsed() < self.cache_ttl {
                     return Ok(status.clone());
                 }
@@ -37,7 +37,7 @@ impl GitSegment {
         let status = self.fetch_git_status(workspace_dir)?;
 
         {
-            let mut cache = self.cache.lock().unwrap();
+            let mut cache = self.cache.lock().unwrap_or_else(|e| e.into_inner());
             *cache = Some((Instant::now(), status.clone()));
         }
 
@@ -67,6 +67,10 @@ impl GitSegment {
             .args(["status", "--porcelain=v2", "--branch"])
             .current_dir(workspace_dir)
             .output()?;
+
+        if !status_output.status.success() {
+            return Err("Failed to read git status".into());
+        }
 
         let status_str = String::from_utf8_lossy(&status_output.stdout);
 
@@ -127,9 +131,8 @@ impl Segment for GitSegment {
         let mut parts = Vec::new();
 
         parts.push(format!(
-            "{}{} {}{}",
+            "{}{}{}",
             colors.branch,
-            "", // Nerd Fond Icon
             status.branch,
             colors.reset,
         ));
