@@ -20,21 +20,19 @@ pub struct SegmentRegistry {
 
 impl SegmentRegistry {
     pub fn new() -> Self {
-        let segments: Vec<Arc<dyn Segment>> = vec![
+        let mut segments: Vec<Arc<dyn Segment>> = vec![
             Arc::new(ModelSegment::new()),
             Arc::new(TokensSegment::new()),
             Arc::new(CostSegment::new()),
             Arc::new(DurationSegment::new()),
             Arc::new(GitSegment::new()),
         ];
-        
+        segments.sort_by_key(|s| s.priority());
         Self { segments }
     }
 
-    pub fn segments(&self) -> Vec<Arc<dyn Segment>> {
-        let mut sorted = self.segments.clone();
-        sorted.sort_by_key(|s| s.priority());
-        sorted
+    pub fn segments(&self) -> &[Arc<dyn Segment>] {
+        &self.segments
     }
 }
 
