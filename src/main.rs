@@ -13,7 +13,7 @@ use std::time::Instant;
 #[derive(Parser, Debug)]
 #[command(name = "claude-statusline")]
 #[command(author = "Brian Huang")]
-#[command(version = "0.1.0")]
+#[command(version = "1.0.0")]
 #[command(about = "Customized and dedicated statusline for Claude Code")]
 struct Args {
     #[arg(short, long)]
@@ -44,10 +44,10 @@ fn main() {
 fn run(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut config = Config::load()?;
 
-    if let Some(theme) = args.theme.clone() {
-        config.theme_name = Some(theme);
-    }
-    if let Some(segments) = args.segments.clone() {
+    if let Some(theme) = args.theme.as_deref() {
+        config.theme_name = Some(theme.to_string());
+     }
+    if let Some(segments) = args.segments.as_deref() {
         config.enabled_segments = Some(
             segments
                 .split(',')
