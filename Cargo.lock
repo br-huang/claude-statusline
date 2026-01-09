@@ -155,6 +155,7 @@ dependencies = [
  "predicates",
  "serde",
  "serde_json",
+ "thiserror",
  "toml",
 ]
 
