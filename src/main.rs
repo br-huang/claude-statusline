@@ -14,7 +14,7 @@ use std::time::Instant;
 #[command(name = "claude-statusline")]
 #[command(author = "Brian Huang")]
 #[command(version = "0.1.0")]
-#[command(about = "Costomized and dedicated statuslien for Cluade Code")]
+#[command(about = "Customized and dedicated statusline for Claude Code")]
 struct Args {
     #[arg(short, long)]
     theme: Option<String>,
@@ -28,27 +28,26 @@ struct Args {
 
 fn main() {
     let start = Instant::now();
+    let args = Args::parse();
 
-    if let Err(e) = run() {
+    if let Err(e) = run(&args) {
         eprintln!("Error: {}", e);
         std::process::exit(1);
     }
 
     // Debug
-    let args = Args::parse();
     if args.debug {
         eprintln!("Rendered in {:?}", start.elapsed());
     }
 }
 
-fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let args = Args::parse();
+fn run(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut config = Config::load()?;
 
-    if let Some(theme) = args.theme {
+    if let Some(theme) = args.theme.clone() {
         config.theme_name = Some(theme);
     }
-    if let Some(segments) = args.segments {
+    if let Some(segments) = args.segments.clone() {
         config.enabled_segments = Some(
             segments
                 .split(',')
