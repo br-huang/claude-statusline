@@ -47,7 +47,7 @@ impl Segment for TokensSegment {
             colors.reset,
             colors.value,
             Self::format_tokens(total),
-            Self::format_tokens(window.total_input_tokens),
+            Self::format_tokens(window.context_window_size),
             usage_pct,
             colors.reset,
         );

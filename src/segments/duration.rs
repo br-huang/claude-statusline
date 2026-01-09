@@ -39,7 +39,7 @@ impl Segment for DurationSegment {
         let duration_ms = ctx.input.cost.total_duration_ms;
 
         let text = format!(
-            "{}🕒{} {}ms {}{}",
+            "{}🕒{} {}{}{}",
             colors.icon,
             colors.reset,
             colors.value,
